@@ -8,5 +8,10 @@
 </head>
 <body>
     <h3>Olá mundo (view)</h3>
+    <ul>
+        <li><a href="{{ route('site.index') }}">Home</a></li>
+        <li><a href="{{ route('site.sobrenos') }}">Sobre nós</a></li>
+        <li><a href="{{ route('site.index') }}">Contato</a></li>
+    </ul>
 </body>
 </html>

@@ -16,36 +16,34 @@ use App\Http\Controllers\ContatoController;
 |
 */
 
-Route::get('/', [PrincipalController::class, 'principal']);
+Route::get('/', [PrincipalController::class, 'principal'])->name('site.index');
+Route::get('/sobre-nos', [SobreNosController::class, 'sobreNos'])->name('site.sobrenos');
+Route::get('/contato', [ContatoController::class, 'contato'])->name('site.contato');
+Route::get('/login', function () { return "Login!";})->name('site.login');
 
-Route::get('/sobre-nos', [SobreNosController::class, 'sobreNos']);
+// Agrupando rotas.
 
-Route::get('/contato', [ContatoController::class, 'contato']);
-
-/*
-  Envio de parâmetros via route
- 
-Route::get('/contato/{nome}/{categoria}/{assunto}/{mensagem?}', 
-    function(string $nome, string $categoria, string $assunto, string $mensagem = 'null'){
-    echo "Nome: ".$nome.
-    "<br>Categoria: ".$categoria.
-    "<br>Asssunto: ".$assunto.
-    "<br>Mensagem: ".$mensagem;
+Route::prefix('/app')->group(function(){
+    Route::get('/clientes', function () { return "Clientes!";})->name('app.clientes');
+    Route::get('/fornecedores', function () { return "Fornecedores!";})->name('app.fornecedores');
+    Route::get('/produtos', function () { return "Produtos!";})->name('app.produtos');
 });
-*/
 
-/*
-  Envio de parâmetros via route
+// Redirecionamento de rotas.
+// Ex: Login.
 
-Route::get('/contato/{nome}/{categoria_id}', 
-    function(
-        string $nome = 'Desconhecido', 
-        int $categoria_id = 1
-    ){
+Route::get('/rota1', function () { 
+    echo "Rota 1!";
+})->name('site.rota1');
 
-    echo "Nome: ".$nome.
-    "<br>Categoria: ".$categoria_id;
+Route::get('/rota2', function () { 
+    return redirect()->route('site.rota1');
+})->name('site.rota2');
 
-})->where('categoria_id', '[0-9]+')->where('nome', '[A-Za-z]+');
+// Route::redirect('/rota2', '/rota1');
 
- */
+// Fallback
+
+Route::fallback(function (){
+    echo 'A rota acessada não existe. Clique <a href="/">aqui</a>';
+});
